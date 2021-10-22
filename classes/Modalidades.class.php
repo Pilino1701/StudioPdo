@@ -1,6 +1,9 @@
 <?php 
 
-require_once 'crudModalidades';
+session_start();
+
+require_once 'crudModalidades.php';
+
 
 Class Modalidades extends Connection implements crudModalidades{
 
@@ -41,15 +44,32 @@ Class Modalidades extends Connection implements crudModalidades{
     
      $this->setModalidade($modalidade);
      $this->setMensalidade($mensalidade);
+     
   }
 
 
 //metodos da interface
 
   public function create(){
-    echo $this->getModalidade();
-    echo $this->getMensalidade();
-  	  }
+   
+     $mod= $this->getModalidade();
+     $mens= $this->getMensalidade();
+
+     $conn = $this->connect();
+     $sql='insert into tb_modalidades values(default,:mod,:mens)';
+     $stmt=$conn->prepare($sql);
+     $stmt=$conn->bindParam(':mod',$mod);
+     $stmt=$conn->bindParam(':mens',$mens);
+
+     if($stmt->execute()):
+       $_SESSION['sucesso']= 'Cadastrada com Sucesso';
+     else:  
+       $_SESSION['erro']= 'Modalidade já Cadastrada';
+     endif;
+
+  	 $destino=header('Location:../../public/modalidades.php'); 
+     
+    }//create
 
   public function read(){
   	  }
