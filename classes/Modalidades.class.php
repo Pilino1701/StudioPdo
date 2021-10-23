@@ -50,6 +50,9 @@ Class Modalidades extends Connection implements crudModalidades{
 
 //metodos da interface
 
+
+ 
+
   public function create(){
    
      $mod= $this->getModalidade();
@@ -58,9 +61,10 @@ Class Modalidades extends Connection implements crudModalidades{
      $conn = $this->connect();
      $sql='insert into tb_modalidades values(default,:mod,:mens)';
      $stmt=$conn->prepare($sql);
-     $stmt=$conn->bindParam(':mod',$mod);
-     $stmt=$conn->bindParam(':mens',$mens);
+     $stmt->bindParam(':mod',$mod);
+     $stmt->bindParam(':mens',$mens);
 
+     
      if($stmt->execute()):
        $_SESSION['sucesso']= 'Cadastrada com Sucesso';
      else:  
@@ -72,6 +76,15 @@ Class Modalidades extends Connection implements crudModalidades{
     }//create
 
   public function read(){
+      $conn=$this->connect();
+      $sql='select * from tb_modalidades';
+      $stmt=$conn->prepare($sql);
+      $stmt->execute();
+
+      $result=$stmt->fetchAll();
+      echo "<pre>";
+      print_r($result);
+
   	  }
 
   public function update($modalidade,$mensalidade,$id){
