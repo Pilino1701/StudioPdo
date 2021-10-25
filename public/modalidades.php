@@ -32,7 +32,7 @@
   	<!--Tabela-->
   	<table class="striped">
   		 <thead>
-  		 	<tr><th>Id</th><th>Modalidade</th><th>Mensalidade</th></tr>
+  		 	<tr><th>Id</th><th>Modalidade</th><th>Mensalidade</th><th>Acoes</th></tr>
   		 </thead>
   		 <tbody>
   		 	<?php

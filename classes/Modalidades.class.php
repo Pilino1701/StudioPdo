@@ -48,6 +48,28 @@ Class Modalidades extends Connection implements crudModalidades{
   }
 
 
+
+public function dadosDaTabela($id){
+ 
+  $conn=$this->connect();
+  
+  $this->setId($id);
+  $_id=$this->getId();
+
+  $sql='select * from tb_modalidades where id = :id';
+  $stmt=$conn->prepare($sql);
+  $stmt->bindParam(':id',$_id);
+  $stmt->execute();
+  $result=$stmt->fetchAll();
+
+  foreach ($result as $values):
+
+  endforeach;  
+
+
+}
+
+
 //metodos da interface
 
 
@@ -82,10 +104,35 @@ Class Modalidades extends Connection implements crudModalidades{
       $stmt->execute();
 
       $result=$stmt->fetchAll();
-      echo "<pre>";
-      print_r($result);
+      //echo "<pre>";
+      //print_r($result);
+ 
+      foreach ($result as $value): 
+        $this->setId($value['id']);
+        $this->setModalidade($value['modalidade']);
+        $this->setMensalidade($value['mensalidade']);
+        
+        $_id=$this->getId();
+        $_mod=$this->getModalidade(); 
+        $_mens=$this->getMensalidade();
 
-  	  }
+        echo "<tr>";
+        echo "<td>$_id</td>";
+        echo "<td>$_mod</td>";
+        echo "<td>$_mens</td>";
+        echo"<td><a href='edit-mod.php?id=$_id' class='green-text'><i class='material-icons left  green-text'>edit</i>Editar</a></td>";
+        echo"<td><a href='delete-mod.php?id=$_id' class='red-text'><i class='material-icons left  red-text'>delete</i>Deletar</a></td>";
+        echo"<td><a href='novo-aluno.php?id=$_id'><i class='material-icons left'>person_add</i>Novo Aluno</a></td>";
+     echo "</tr>";
+
+
+      endforeach; 
+
+
+
+ 
+
+  	  }//read
 
   public function update($modalidade,$mensalidade,$id){
   	  }
