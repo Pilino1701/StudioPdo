@@ -2,6 +2,9 @@
 
 session_start();
 
+require_once 'crudAlunos.php';
+
+
 class Alunos extends Connection implements crudAlunos{
   
   private $id,$nome,$tel,$email,$modalidade;
@@ -91,7 +94,29 @@ class Alunos extends Connection implements crudAlunos{
    }
 
 
-   public function read($search){}
+
+
+   public function read($search){
+    $conn=$this->connect();
+    $search=$search."%";
+
+    $sql="select tb_alunos.nome,tb_alunos.tel,tb_alunos.email,tb_modalidades.modalidade,
+          tb_modalidades.mensalidade from tb_alunos join tb_modalidades on 
+          tb_modalidades.id = tb_alunos.modalidade where tb_modalidades.modalidade like :search";
+    
+    $stmt=$conn->prepare($sql);
+    $stmt->bindParam(':search',$search);
+    $stmt->execute();
+    $result=$stmt->fetchAll();
+
+    echo '<pre>';
+    print_r($result);    
+
+   }
+
+
+
+
    public function update($nome,$tel,$email,$modalidade,$id){}
    public function delete($id){}
 

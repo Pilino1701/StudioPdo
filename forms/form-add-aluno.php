@@ -1,4 +1,4 @@
-<form action="../databade/alunos/create.php" method="post" class="row">
+<form action="../database/alunos/create.php" method="post" class="row">
   
   <div class="input-field col s12">
     <input type="text" name="nome" id="nome" required autofocus>
