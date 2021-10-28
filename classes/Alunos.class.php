@@ -80,6 +80,7 @@ class Alunos extends Connection implements crudAlunos{
     $result=$stmt->fetchAll();
 
     foreach($result as $values):
+      require_once "../forms/form-edit-alunos.php";	
     endforeach;	
 
   }
