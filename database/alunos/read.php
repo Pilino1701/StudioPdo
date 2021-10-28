@@ -1,7 +1,7 @@
 <?php
-require_once "../../classes/autoload.php";
+require_once "../classes/autoload.php";
 
-$search="Ae";
+$search = filter_input(INPUT_POST,'search',FILTER_SANITIZE_SPECIAL_CHARS);
 
 $readAlunos = new Alunos();
 $readAlunos->read($search);

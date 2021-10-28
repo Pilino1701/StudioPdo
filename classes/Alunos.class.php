@@ -65,6 +65,25 @@ class Alunos extends Connection implements crudAlunos{
   
   }
 
+
+  public function dadosDaTabela($id){
+  	$conn=$this->connect();
+
+  	$this->setId($id);
+  	$_id=$this->getId();
+
+  	$sql="select * from tb_alunos where id = :id";
+  	$stmt=$conn->prepare($sql);
+  	$stmt->bindParam(':id',$_id);
+    $stmt->execute();
+
+    $result=$stmt->fetchAll();
+
+    foreach($result as $values):
+    endforeach;	
+
+  }
+
 //metodos da interface
 
    public function create(){
@@ -100,7 +119,7 @@ class Alunos extends Connection implements crudAlunos{
     $conn=$this->connect();
     $search=$search."%";
 
-    $sql="select tb_alunos.nome,tb_alunos.tel,tb_alunos.email,tb_modalidades.modalidade,
+    $sql="select tb_alunos.id,tb_alunos.nome,tb_alunos.tel,tb_alunos.email,tb_modalidades.modalidade,
           tb_modalidades.mensalidade from tb_alunos join tb_modalidades on 
           tb_modalidades.id = tb_alunos.modalidade where tb_modalidades.modalidade like :search";
     
@@ -109,8 +128,30 @@ class Alunos extends Connection implements crudAlunos{
     $stmt->execute();
     $result=$stmt->fetchAll();
 
-    echo '<pre>';
-    print_r($result);    
+    //echo '<pre>';
+    //print_r($result);  
+     
+     foreach($result as $values):
+
+     	$this->setId($values['id']);
+     	$id=$this->getId();
+
+         echo '<tr>';
+         echo '<td>'.$values['nome'].'</td>';
+         echo '<td>'.$values['tel'].'</td>';
+         echo '<td>'.$values['email'].'</td>';
+         echo '<td>'.$values['modalidade'].'</td>';
+         echo '<td>'.$values['mensalidade'].'</td>';
+//potrebbe anche essere cosi:echo"<td><a href='edit-alunos.php?id={$this->getId()}' class='btn btn-small'>editar</a></td>";
+         echo"<td><a href='edit-alunos.php?id=$id' class='btn btn-small'>editar</a></td>";
+ 
+
+       echo '</tr>';
+       
+
+     endforeach;	
+     
+
 
    }
 
