@@ -122,7 +122,8 @@ class Alunos extends Connection implements crudAlunos{
 
     $sql="select tb_alunos.id,tb_alunos.nome,tb_alunos.tel,tb_alunos.email,tb_modalidades.modalidade,
           tb_modalidades.mensalidade from tb_alunos join tb_modalidades on 
-          tb_modalidades.id = tb_alunos.modalidade where tb_modalidades.modalidade like :search";
+          tb_modalidades.id = tb_alunos.modalidade where tb_modalidades.modalidade like :search
+          order by nome";
     
     $stmt=$conn->prepare($sql);
     $stmt->bindParam(':search',$search);
@@ -145,6 +146,7 @@ class Alunos extends Connection implements crudAlunos{
          echo '<td>'.$values['mensalidade'].'</td>';
 //potrebbe anche essere cosi:echo"<td><a href='edit-alunos.php?id={$this->getId()}' class='btn btn-small'>editar</a></td>";
          echo"<td><a href='edit-alunos.php?id=$id' class='btn btn-small'>editar</a></td>";
+         echo"<td><a href='../database/alunos/delete.php?id=$id' class='btn btn-small red'>deletar</a></td>";
  
 
        echo '</tr>';
@@ -159,8 +161,55 @@ class Alunos extends Connection implements crudAlunos{
 
 
 
-   public function update($nome,$tel,$email,$modalidade,$id){}
-   public function delete($id){}
+   public function update($nome,$tel,$email,$modalidade,$id){
+    $conn=$this->connect();
+
+    $this->setNome($nome);
+    $this->setTel($tel);
+    $this->setEmail($email);
+    $this->setModalidade($modalidade);
+    $this->setId($id);
+
+    $_nome=$this->getNome();
+    $_tel=$this->getTel();
+    $_email=$this->getEmail();
+    $_modalidade=$this->getModalidade();
+    $_id=$this->getId();
+
+    $sql="update tb_alunos set nome= :nome, tel= :tel, email= :email, modalidade= :modalidade
+      where id= :id ";
+
+    $stmt=$conn->prepare($sql);
+    $stmt->bindParam(':nome',$_nome);
+    $stmt->bindParam(':tel',$_tel);
+    $stmt->bindParam(':email',$_email);
+    $stmt->bindParam(':modalidade',$_modalidade);
+    $stmt->bindParam(':id',$_id);
+    $stmt->execute();
+
+    $destino = header("Location: ../../public/home.php");//é chiamata da update.php
+
+
+
+   }
+
+
+
+   public function delete($id){
+     $conn=$this->connect();
+     
+     $this->setId($id);
+     $_id=$this->getId();
+     
+     $sql="delete from tb_alunos where id=:id";
+
+     $stmt=$conn->prepare($sql);
+     $stmt->bindParam(':id',$_id);
+     $stmt->execute();
+
+     $destino=header("Location:../../public/home.php");
+
+   }
 
 
 }//class Alunos
